@@ -1,8 +1,11 @@
 package com.sample.photogallery
 
+import android.Manifest
 import android.app.PendingIntent
 import android.content.Context
+import android.content.pm.PackageManager
 import android.util.Log
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.CoroutineWorker
@@ -62,6 +65,7 @@ class PollWorker(
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .build()
+
         NotificationManagerCompat.from(context).notify(0, notification)
     }
 
