@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.sample.photogallery"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.sample.photogallery"
@@ -58,7 +58,7 @@ dependencies {
     implementation("com.squareup.moshi:moshi:1.13.0")
     ksp("com.squareup.moshi:moshi-kotlin-codegen:1.13.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
-
+    implementation("io.coil-kt:coil:2.0.0-rc02")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

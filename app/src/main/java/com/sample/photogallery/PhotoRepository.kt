@@ -10,7 +10,7 @@ class PhotoRepository {
     private val flickrApi: FlickrApi
     init {
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://wwwapi.flickr.com/")
+            .baseUrl("https://api.flickr.com/")
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
         flickrApi = retrofit.create()
