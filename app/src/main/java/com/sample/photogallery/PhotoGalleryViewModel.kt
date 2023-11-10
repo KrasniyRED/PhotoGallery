@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "PhotoGalleryViewModel"
 class PhotoGalleryViewModel : ViewModel() {
-    private val photoRepository = PhotoRepository()
+    private val photoRepository = PhotoRepository.get()
     private val preferencesRepository = PreferencesRepository.get()
     private val _uiState: MutableStateFlow<PhotoGalleryUiState> =
         MutableStateFlow(PhotoGalleryUiState())
@@ -60,6 +60,14 @@ class PhotoGalleryViewModel : ViewModel() {
         } else {
             photoRepository.fetchPhotos()
         }
+    }
+
+    suspend fun addPhoto(photo: GalleryItem) {
+        photoRepository.addPhoto(photo)
+    }
+
+    suspend fun deletePhotos(){
+        photoRepository.deletePhotos()
     }
 
 }

@@ -19,7 +19,7 @@ class PollWorker(
 ) : CoroutineWorker(context, workerParameters) {
     override suspend fun doWork(): Result {
         val preferencesRepository = PreferencesRepository.get()
-        val photoRepository = PhotoRepository()
+        val photoRepository = PhotoRepository.get()
         val query = preferencesRepository.storedQuery.first()
         val lastId = preferencesRepository.lastResultId.first()
         if (query.isEmpty()) {

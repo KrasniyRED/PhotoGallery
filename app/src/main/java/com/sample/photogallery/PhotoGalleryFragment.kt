@@ -14,16 +14,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.sample.photogallery.api.GalleryItem
 import com.sample.photogallery.databinding.FragmentPhotoGalleryBinding
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
+import android.widget.Toast
 
 private const val TAG = "PhotoGalleryFragment"
 private const val POLL_WORK = "POLL_WORK"
@@ -65,7 +67,12 @@ class PhotoGalleryFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 photoGalleryViewModel.uiState.collect { state ->
-                    binding.photoGrid.adapter = PhotoListAdapter(state.images)
+                    binding.photoGrid.adapter = PhotoListAdapter(state.images) {image->
+                        addNewPhoto(image)
+                        findNavController().navigate(
+                            PhotoGalleryFragmentDirections.openPhotolist()
+                        )
+                    }
                     searchView?.setQuery(state.query, false)
                     updatePollingState(state.isPolling)
                 }
@@ -73,6 +80,7 @@ class PhotoGalleryFragment : Fragment() {
         }
 
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -107,7 +115,28 @@ class PhotoGalleryFragment : Fragment() {
                 photoGalleryViewModel.toggleIsPolling()
                 true
             }
+            R.id.menu_item_showdb -> {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    findNavController().navigate(
+                        PhotoGalleryFragmentDirections.openPhotolist()
+                    )
+                }
+                true
+
+            }
+            R.id.menu_item_cleardb -> {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    photoGalleryViewModel.deletePhotos()
+                }
+                true
+            }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun addNewPhoto(refitem:GalleryItem) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            photoGalleryViewModel.addPhoto(refitem)
         }
     }
 
